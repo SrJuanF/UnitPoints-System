@@ -1,0 +1,51 @@
+{
+  "name": "unitpoints-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:unit": "hardhat test test/unit.ts",
+    "test:staging": "hardhat test test/staging.ts",
+    "test:all": "hardhat test test/unit.ts test/staging.ts",
+    "test:coverage": "hardhat coverage --testfiles test/unit.ts test/staging.ts",
+    "deploy:UserCompanyManagers": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep1.ts --network passetHubTestnet",
+    "deploy:EventManager": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep2.ts --network passetHubTestnet",
+    "deploy:TokenSwap": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep3.ts --network passetHubTestnet",
+    "deploy:DAOGovernance": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep4.ts --network passetHubTestnet",
+    "deploy:TokenAdministrator": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep5.ts --network passetHubTestnet",
+    "deploy:UnitpointsTokens": "hardhat ignition deploy ignition/modules/UnitPointsEcosystemStep6.ts --network passetHubTestnet",
+    "deploy:ecosystem": "echo 'Nota: No hay un módulo único UnitPointsEcosystem.ts. Usa los scripts deploy:* por contrato.'",
+    "node": "hardhat node",
+    "verify:UnitPoints": "hardhat ignition verify UnitPointsEcosystemStep6 --network passetHubTestnet",
+    "verify:chain": "hardhat ignition verify chain-420420422 --network passetHubTestnet",
+    "verify:UserManager": "hardhat ignition verify UnitPointsEcosystemStep1 --network passetHubTestnet",
+    "verify:CompanyManager": "hardhat ignition verify UnitPointsEcosystemStep1 --network passetHubTestnet",
+    "verify:EventManager": "hardhat ignition verify UnitPointsEcosystemStep2 --network passetHubTestnet",
+    "verify:TokenSwap": "hardhat ignition verify UnitPointsEcosystemStep3 --network passetHubTestnet",
+    "verify:DAOGovernance": "hardhat ignition verify UnitPointsEcosystemStep4 --network passetHubTestnet",
+    "verify:TokenAdministrator": "hardhat ignition verify UnitPointsEcosystemStep5 --network passetHubTestnet",
+    "clean": "hardhat clean",
+    "coverage": "hardhat coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-viem": "^2.0.6",
+    "@nomicfoundation/hardhat-ignition": "^0.15.12",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@parity/hardhat-polkadot": "^0.1.8",
+    "@types/chai-as-promised": "^7.1.8",
+    "hardhat": "2.24.1",
+    "chai": "^4.5.0",
+    "solc": "0.8.28",
+    "typescript": "~5.0.4",
+    "viem": "^2.31.7"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2"
+  }
+}

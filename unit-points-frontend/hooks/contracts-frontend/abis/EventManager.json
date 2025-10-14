@@ -1,0 +1,621 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "ActivityFull",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ActivityNotActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CompanyManagerNotConfigured",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CompanyNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EventNotActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidCompanyManagerAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidDAOAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidDates",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSectorToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidTokenAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAuthorized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotEventOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrantCall",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "activityName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum EventManager.ActivityType",
+        "name": "activityType",
+        "type": "uint8"
+      }
+    ],
+    "name": "ActivityAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "activityName",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "proposalId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      }
+    ],
+    "name": "DAOProposalCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "company",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "EventCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "string",
+        "name": "_activityName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "enum EventManager.ActivityType",
+        "name": "_activityType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_points",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_maxParticipants",
+        "type": "uint16"
+      },
+      {
+        "internalType": "enum IDAOGovernance.ProposalType",
+        "name": "_proposalType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_votingPeriod",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_minVotingPower",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_quorumThreshold",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_approvalThreshold",
+        "type": "uint8"
+      }
+    ],
+    "name": "addActivity",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "admins",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "companyManager",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_sectorTokenId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_startDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_endDate",
+        "type": "uint64"
+      }
+    ],
+    "name": "createEvent",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoGovernance",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "name": "events",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "eventId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "address",
+        "name": "company",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "uint16",
+        "name": "sectorTokenId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint64",
+        "name": "startDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "endDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "string",
+        "name": "_activityName",
+        "type": "string"
+      }
+    ],
+    "name": "getActivityInfo",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      },
+      {
+        "internalType": "enum EventManager.ActivityType",
+        "name": "activityType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint32",
+        "name": "pointsReward",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "pointsCost",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxParticipants",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "currentParticipants",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint32",
+        "name": "proposalId",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getEventActivities",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getEventInfo",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "eventId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "address",
+        "name": "company",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "uint16",
+        "name": "sectorTokenId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint64",
+        "name": "startDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "endDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActive",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      }
+    ],
+    "name": "getEventSectorToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_eventId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "string",
+        "name": "_activityName",
+        "type": "string"
+      }
+    ],
+    "name": "incrementActivityParticipants",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextEventId",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextSectorId",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "registerSectorToken",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_companyManager",
+        "type": "address"
+      }
+    ],
+    "name": "setCompanyManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_daoGovernance",
+        "type": "address"
+      }
+    ],
+    "name": "setDAOGovernance",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "name": "sectorTokens",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
