@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Address } from "viem";
+import { CONTRACT_ADDRESSES } from "@/hooks/contracts-frontend/addresses";
 import * as UPT from "@/hooks/contracts-frontend/scripts/unitPointsTokens";
 import * as EventManager from "@/hooks/contracts-frontend/scripts/eventManager";
 import {
@@ -606,6 +607,15 @@ export function CompanyDashboard({
   // On-chain reads via scripts
   const bal = UPT.balanceOf(userAddress as `0x${string}` | Address);
 
+  // Allowance & Approve state
+  const [spender] = useState(CONTRACT_ADDRESSES.tokenAdministrator);
+  const [approveAmountStr, setApproveAmountStr] = useState<string>("");
+  const approveAmount = approveAmountStr ? BigInt(approveAmountStr) : undefined;
+  const { approve, isPending: isApprovePending } = UPT.useApprove();
+  const [txApprove, setTxApprove] = useState<string | null>(null);
+
+  const allowanceHook = UPT.allowance(userAddress as `0x${string}`, spender);
+
   // Get company event IDs as array (with proper typing)
   const eventIdsArray: bigint[] = (companyEventIds || []) as bigint[];
 
@@ -722,6 +732,81 @@ export function CompanyDashboard({
                   Verified on blockchain
                 </p>
               </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* UnitPoints Token Card (balance + allowance/approve) */}
+      <Card className="glass-surface border-primary/20">
+        <CardHeader>
+          <CardTitle>UnitPoints Token</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <div className="text-sm text-muted-foreground">Contract Address</div>
+            <div className="font-mono break-all text-xs">
+              {CONTRACT_ADDRESSES.unitPointsTokens}
+            </div>
+          </div>
+          <div>
+            <div className="text-sm text-muted-foreground">Your Balance</div>
+            <div className="text-3xl font-bold text-primary">
+              {bal.isLoading ? "Loading..." : bal.data ? Number(bal.data) : "0"}{" "}
+              <span className="text-base text-muted-foreground">UPT</span>
+            </div>
+          </div>
+
+          {/* Allowance & Approve section (copiado de components/test) */}
+          <div className="space-y-3 pt-4 border-t">
+            <div className="text-sm font-medium">Allowance</div>
+            <div className="grid gap-2 md:grid-cols-2">
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Spender (Administrator)</div>
+                <Input
+                  value={spender}
+                  placeholder="0x..."
+                  readOnly
+                  disabled
+                />
+              </div>
+              <div className="flex items-end gap-2">
+                <div className="text-sm flex-1">
+                  {allowanceHook?.isLoading
+                    ? "Consultando..."
+                    : `Allowance: ${allowanceHook?.data ? String(allowanceHook.data) : "-"}`}
+                </div>
+                <Button
+                  variant="secondary"
+                  disabled={!userAddress}
+                  onClick={() => allowanceHook?.refetch?.()}
+                >
+                  Consultar allowance
+                </Button>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <div className="text-sm font-medium mb-2">Approve</div>
+              <div className="grid gap-2 md:grid-cols-2">
+                <Input
+                  type="number"
+                  placeholder="Amount"
+                  value={approveAmountStr}
+                  onChange={(e) => setApproveAmountStr(e.target.value)}
+                />
+                <Button
+                  onClick={async () => {
+                    if (!approveAmount) return;
+                    const hash = await approve(spender as Address, approveAmount as bigint);
+                    setTxApprove(hash as `0x${string}`);
+                  }}
+                  disabled={isApprovePending || !approveAmountStr}
+                >
+                  {isApprovePending ? "Aprobando..." : "Aprobar"}
+                </Button>
+              </div>
+              {txApprove && <div className="text-xs mt-2">Tx: {txApprove}</div>}
             </div>
           </div>
         </CardContent>

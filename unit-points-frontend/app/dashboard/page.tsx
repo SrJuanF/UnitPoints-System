@@ -23,18 +23,14 @@ export default function DashboardPage() {
   // Redirect to home if not authenticated
   useEffect(() => {
     if (!ready) return; // Wait for Privy to initialize
+    
     if (!authenticated) {
       router.push("/");
     }
   }, [authenticated, ready, router]);
 
-  // If not authenticated, return null (redirect happens in useEffect)
-  if (!authenticated) {
-    return null;
-  }
-
   // Show loading screen while Privy initializes
-  if (!ready || isLoading) {
+  if (!ready || isLoading || !userRole) {
     return (
       <main className="min-h-screen bg-background">
         <Navbar />

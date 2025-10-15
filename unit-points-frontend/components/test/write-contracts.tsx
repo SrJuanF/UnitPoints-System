@@ -14,6 +14,7 @@ import { useRegisterUser, isUserRegistered, isUserSubscribed } from "@/hooks/con
 import { useRegisterCompany, isActiveCompany } from "@/hooks/contracts-frontend/scripts/companyManager"
 import { useSubscribeToEvent, useParticipateInActivity } from "@/hooks/contracts-frontend/scripts/tokenAdministrator"
 import { useApprove, useTransfer } from "@/hooks/contracts-frontend/scripts/unitPointsTokens"
+import { CONTRACT_ADDRESSES } from "@/hooks/contracts-frontend/addresses"
 
 function TxStatus({ hash }: { hash?: `0x${string}` }) {
   const { data: receipt, isLoading, isSuccess, error } = useWaitForTransactionReceipt({ hash })
@@ -48,7 +49,8 @@ export function WriteContracts() {
   const userSubscribedHook = isUserSubscribed(userAddress as Address, eventId as bigint)
   const [activityName, setActivityName] = useState("")
   const [support, setSupport] = useState<boolean>(true)
-  const [spender, setSpender] = useState<string>("")
+  // Spender fijo: TokenAdministrator
+  const [spender] = useState<string>(CONTRACT_ADDRESSES.tokenAdministrator)
   const [approveAmountStr, setApproveAmountStr] = useState("")
   const approveAmount = approveAmountStr ? BigInt(approveAmountStr) : (undefined as unknown as bigint)
   const [transferTo, setTransferTo] = useState<string>("")
@@ -243,13 +245,13 @@ export function WriteContracts() {
           <CardTitle>Aprobar tokens</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          <Label>Spender</Label>
-          <Input placeholder="0x..." value={spender} onChange={(e) => setSpender(e.target.value)} />
+          <Label>Spender (TokenAdministrator - fijo)</Label>
+          <Input placeholder="0x..." value={spender} readOnly disabled />
           <Label>Monto (entero)</Label>
           <Input type="number" placeholder="100" value={approveAmountStr} onChange={(e) => setApproveAmountStr(e.target.value)} />
         </CardContent>
         <CardFooter>
-          <Button onClick={async () => { if (!isConnected || !spender || !approveAmount) return; const hash = await approve(spender as Address, approveAmount as bigint); setTxApprove(hash as `0x${string}`) }} disabled={isApprovePending || !spender || !approveAmountStr || !isConnected}>
+          <Button onClick={async () => { if (!isConnected || !approveAmount) return; const hash = await approve(spender as Address, approveAmount as bigint); setTxApprove(hash as `0x${string}`) }} disabled={isApprovePending || !approveAmountStr || !isConnected}>
             {isApprovePending ? "Enviando..." : "Aprobar"}
           </Button>
           {approveError && <div className="text-red-500 text-xs ml-2">Error: {String(approveError.message)}</div>}

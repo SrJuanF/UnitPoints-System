@@ -78,13 +78,13 @@ export const balanceOf = (account: Address) => {
  * @returns Cantidad permitida
  */
 export const allowance = (owner: Address, spender: Address) => {
-  const { data } = useReadContract({
+  const allowance = useReadContract({
     address: CONTRACT_ADDRESSES.unitPointsTokens,
     abi: UNITPOINTS_TOKENS_ABI,
     functionName: "allowance",
     args: [owner, spender],
   });
-  return data as bigint;
+  return allowance;
 };
 
 /**

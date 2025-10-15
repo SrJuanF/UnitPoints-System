@@ -201,13 +201,14 @@ export function ReadContracts() {
   const balanceHook = balanceOf(balanceAddress as Address)
 
   const [ownerAddress, setOwnerAddress] = useState<string>("")
-  const [spenderAddress, setSpenderAddress] = useState<string>("")
+  // Spender fijo: TokenAdministrator
+  const [spenderAddress] = useState<string>(CONTRACT_ADDRESSES.tokenAdministrator)
   const allowanceHook = useReadContract({
     address: CONTRACT_ADDRESSES.unitPointsTokens,
     abi: UnitPointsTokensABI,
     functionName: "allowance",
     args: [ownerAddress as Address, spenderAddress as Address],
-    query: { enabled: !!ownerAddress && !!spenderAddress },
+    query: { enabled: !!ownerAddress },
   })
 
   // CompanyManager inputs
@@ -270,10 +271,10 @@ export function ReadContracts() {
           <div className="space-y-2">
             <Label>Owner (allowance)</Label>
             <Input placeholder="0x..." value={ownerAddress} onChange={(e) => setOwnerAddress(e.target.value)} />
-            <Label>Spender (allowance)</Label>
-            <Input placeholder="0x..." value={spenderAddress} onChange={(e) => setSpenderAddress(e.target.value)} />
+            <Label>Spender (TokenAdministrator)</Label>
+            <Input placeholder="0x..." value={spenderAddress} readOnly disabled />
             <div className="text-sm">{allowanceHook?.isLoading ? "Consultando..." : `Allowance: ${allowanceHook?.data ? String(allowanceHook.data) : "-"}`}</div>
-            <Button variant="secondary" disabled={!ownerAddress || !spenderAddress} onClick={() => allowanceHook?.refetch?.()}>Consultar allowance</Button>
+            <Button variant="secondary" disabled={!ownerAddress} onClick={() => allowanceHook?.refetch?.()}>Consultar allowance</Button>
           </div>
         </CardContent>
       </Card>

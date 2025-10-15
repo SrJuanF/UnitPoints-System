@@ -165,6 +165,15 @@ export function UserDashboard({
   // On-chain reads via scripts
   const bal = UPT.balanceOf(userAddress as `0x${string}` | Address);
 
+  // Allowance & Approve state
+  const [spender] = useState(CONTRACT_ADDRESSES.tokenAdministrator);
+  const [approveAmountStr, setApproveAmountStr] = useState<string>("");
+  const approveAmount = approveAmountStr ? BigInt(approveAmountStr) : undefined;
+  const { approve, isPending: isApprovePending } = UPT.useApprove();
+  const [txApprove, setTxApprove] = useState<string | null>(null);
+
+  const allowanceHook = UPT.allowance(userAddress as `0x${string}`, spender)
+
   // Function to handle opening the modal
   const handleOpenModal = (eventId: bigint, eventInfo: EventManager.EventInfoReturn) => {
     setSelectedEventId(Number(eventId));
@@ -260,6 +269,62 @@ export function UserDashboard({
                 ? Number(bal.data)
                 : "0"}{" "}
               <span className="text-base text-muted-foreground">UPT</span>
+            </div>
+          </div>
+
+          {/* Allowance & Approve section (copiado de components/test) */}
+          <div className="space-y-3 pt-4 border-t">
+            <div className="text-sm font-medium">Allowance</div>
+
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Spender (Administrator)</div>
+                <Input
+                  value={spender}
+                  placeholder="0x..."
+                  readOnly
+                  disabled
+                />
+              </div>
+              <div className="flex items-end gap-2">
+                
+                <Button
+                  variant="secondary"
+                  disabled={!userAddress}
+                  onClick={() => allowanceHook?.refetch?.()}
+                >
+                  Consultar allowance
+                </Button>
+                <div className="text-sm flex-1">
+                  {allowanceHook?.isLoading
+                    ? "Consultando..."
+                    : `Allowance: ${allowanceHook?.data ? String(allowanceHook.data) : "0"}`}
+                </div>
+              </div>
+           
+
+            <div className="pt-2">
+              <div className="text-sm font-medium mb-2">Approve</div>
+              <div className="grid gap-2 md:grid-cols-2">
+                <Input
+                  type="number"
+                  placeholder="Amount"
+                  value={approveAmountStr}
+                  onChange={(e) => setApproveAmountStr(e.target.value)}
+                />
+                <Button
+                  onClick={async () => {
+                    if (!approveAmount) return;
+                    const hash = await approve(spender as Address, approveAmount as bigint);
+                    setTxApprove(hash as `0x${string}`);
+                  }}
+                  disabled={isApprovePending || !approveAmountStr}
+                >
+                  {isApprovePending ? "Aprobando..." : "Aprobar"}
+                </Button>
+              </div>
+              {txApprove && (
+                <div className="text-xs mt-2 font-mono break-words whitespace-normal">Tx: {txApprove}</div>
+              )}
             </div>
           </div>
         </CardContent>
