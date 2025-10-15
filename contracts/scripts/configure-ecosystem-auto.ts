@@ -294,7 +294,7 @@ rm -rf unit-points-frontend/.git && \
 git rm --cached -rf unit-points-frontend && \
 git add contracts && \
 git add unit-points-frontend 
-git commit -m "deploy UnitPoints System"
+git commit -m "Deploy UnitPoints System"
 git push -u origin main
 
 git remote set-url origin https://github.com/SrJuanF/UnitPoints-System.git
